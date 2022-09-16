@@ -1,0 +1,30 @@
+version: 2.1
+executors:
+  node-image:
+    docker:
+      - image: cimg/node:13.8.0
+
+  aws-cli-image:
+    docker:
+      - image: amazon/aws-cli
+
+  ansible-image:
+    docker:
+      - image: python:3.7-alpine3.11
+jobs:
+  test_backend: 
+    executor: node-image
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: test frontend
+          command: |
+            cd frontend
+            npm install
+            npm run test
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
+      
