@@ -19,7 +19,6 @@ describe("the getQuestion-handler", () => {
     const res = handler(req)
     expect(redisStore.get).toBeCalledWith(req.params._id);
   });
-
   it("should check the redisStore with the _id as key and if it exist, should returned  the store data", async () => {
     const req = {
       params: { _id: "ekemaId" },
