@@ -23,7 +23,7 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm run test
+            npm run test:coverage
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
