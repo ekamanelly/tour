@@ -78,13 +78,32 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: test-backend
+  build-backend:
+    executor: node-image
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [test-backend]
+      - run:
+          name: testing back-end
+          command: |
+            cd backend
+            npm install
+            npm run build
+            cd ..
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+      - save_cache:
+          paths: [backend/node_modules]
+          key: test-backend          
      
 
 workflows:
   default:
     jobs:
       - test-backend
-      # - build-backend
+      - build-backend
       # - test-frontend:
       #     requires: [build-frontend]
       # - test-backend:
