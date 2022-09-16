@@ -12,19 +12,22 @@ executors:
     docker:
       - image: python:3.7-alpine3.11
 jobs:
-  test_backend: 
+  test-backend: 
     executor: node-image
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [test-backend]
       - run:
-          name: test frontend
+          name: testing backend
           command: |
-            cd frontend
+            cd backend
             npm install
             npm run test:coverage
       - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
-      
+          paths: [test-backend/node_modules]
+          key: test-backend
+workflows:
+  default:
+    jobs:
+      - test-backend      
